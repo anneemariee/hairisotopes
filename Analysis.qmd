@@ -20,6 +20,7 @@ library(tidyverse)
 library(readxl)
 library(dplyr)
 library(ggrepel)
+library(here)
 ```
 
 The code blocks below produce Figure 1 on our poster:
@@ -79,6 +80,15 @@ ggplot() +
   xlim(-23, -17)+
   ylim(0,14.5) +
     labs(title = "Comparing Archy 486 Samples to Trophic Levels in a Terrestrial C3 Ecosystem")
+ggsave(here("analysis",
+            "figures", 
+            "trophic_level.png"),
+       bg ="white",
+       h = 15, # experiment with h and w to get the right size and proportion
+       w = 25,
+       units = "in",
+       dpi = 900) # make the image nice and crisp))
+
 ```
 
 ## Plotting Average δ15N (‰) and δ13C (‰) for ARCHY 486 Class and Modern Global Subsistence Average δ15N (‰) and δ13C (‰) (with line range for standard deviation)
@@ -202,6 +212,15 @@ ggplot() +
                 xmax=`δ13C (‰)` +1*mean_sd_C13))) +
   labs(title = "Global Context for Average δ15N (‰) and δ13C (‰) in Archy 486 Class")
 
+ggsave(here("analysis",
+            "figures", 
+            "geography.png"),
+       bg ="white",
+       h = 15, # experiment with h and w to get the right size and proportion
+       w = 25,
+       units = "in",
+       dpi = 900) # make the image nice and crisp))
+
 ```
 
 
@@ -250,11 +269,20 @@ ggplot(data, aes(x = Sample_ID, y = Frequency, color = Sample_ID)) +
   scale_fill_manual(values = setNames(color_palette, unique_sample_ids)) +
   facet_wrap(~Question, scales = "free") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))  
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggsave(here("analysis",
+            "figures", 
+            "survey_results.png"),
+       bg ="white",
+       h = 15, # experiment with h and w to get the right size and proportion
+       w = 25,
+       units = "in",
+       dpi = 900) # make the image nice and crisp))
+
 
 ```
 ```{r}
-# sustinence type
+# subsistence type
 # label not aligning with dots
 ggplot() +
   geom_point(data = sample_data,
@@ -274,8 +302,15 @@ ggplot() +
                  y = `δ15N_MDE (‰)`,
                  colour = `subsistence style`),
              size=1) +
-  xlim(-30,0)
-  
+  xlim(-30,0) 
+  ggsave(here("analysis",
+            "figures", 
+            "subsistence_style.png"),
+       bg ="white",
+       h = 15, # experiment with h and w to get the right size and proportion
+       w = 25,
+       units = "in",
+       dpi = 900) # make the image nice and crisp))
 
 ```
 
