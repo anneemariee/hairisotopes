@@ -5,6 +5,15 @@ editor: visual
 ---
 
 ```{r}
+# Read in our data 
+
+sample_data <- read.csv("sample_CN.csv")
+
+geom_point(data=sample_data, 
+           aes(x=d.13C.12C.VPDB,
+               y=d.15N.14N.air)) +
+  annotate("rect", xmin=c(-22,-21,-20), xmax=c(-20,-19,-18),
+           
 
 ```
 
