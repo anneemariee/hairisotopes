@@ -284,6 +284,8 @@ ggsave(here("analysis",
 ```{r}
 # subsistence type
 # label not aligning with dots
+# redo
+
 ggplot() +
   geom_point(data = sample_data,
              aes(x=d.13C.12C.raw,
