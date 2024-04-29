@@ -85,9 +85,13 @@ ggplot() +
 The code blocks below produce Figure 2 on our poster:
 ```{r}
 
+global_data <- 
+  read_excel("Global N15 Values.xlsx",
+             sheet = "Modern subsistence ind.")
 global_values <- 
   read_excel("Global N15 Values.xlsx",
              sheet = "Modern non subsistence averages")
+
 global_subsistence_values <- 
   read_excel("Global N15 Values.xlsx",
     sheet = "modern subsistence averages")
@@ -249,6 +253,32 @@ ggplot(data, aes(x = Sample_ID, y = Frequency, color = Sample_ID)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  
 
 ```
+```{r}
+# sustinence type
+# label not aligning with dots
+ggplot() +
+  geom_point(data = sample_data,
+             aes(x=d.13C.12C.raw,
+                 y=d.15N.14N.raw),
+             size = 1,
+             colour = "red") +
+  geom_text_repel(data = sample_data,
+             aes(x = `d.13C.12C.VPDB`, 
+                 y = `d.15N.14N.air`,
+                 label = Identifier.1),
+             # label all ID's despite overlap
+             max.overlaps = Inf,
+             size = 4)+
+  geom_point(data = global_data,
+             aes(x = `δ13C_MDE (‰)`, 
+                 y = `δ15N_MDE (‰)`,
+                 colour = `subsistence style`),
+             size=1) +
+  xlim(-30,0)
+  
+
+```
+
 ## Access Poster
 Our poster can be viewed online here:
 
