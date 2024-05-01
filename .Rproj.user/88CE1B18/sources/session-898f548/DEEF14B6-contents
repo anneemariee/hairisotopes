@@ -46,40 +46,78 @@ global_data_av <-
 #| fig-cap: "Scatterplot of individual δ15N (‰) and δ13C (‰) Archy 486 sample ID’s grouped by C3 Terrestrial Ecosystem and individual diet classification (Müldner, G. (2018). Plot produced by Anne and Aoife. "
   # plot our hair data
 library(ggrepel)
-ggplot() +
-  geom_point(data = sample_data,
-             aes(x = d.13C.12C.VPDB , 
+ggplot(sample_data) +
+  geom_point(aes(x = d.13C.12C.VPDB ,
                  y = d.15N.14N.air),
-             size = 2)+
+             size = 2) +
   # label each data point with sample ID
-    geom_text_repel(data = sample_data,
-             aes(x = `d.13C.12C.VPDB`, 
-                 y = `d.15N.14N.air`,
-                 label = Identifier.1),
-             # label all ID's despite overlap
-             max.overlaps = Inf,
-             size = 4)+
+  geom_text_repel(
+    aes(x = `d.13C.12C.VPDB`,
+        y = `d.15N.14N.air`,
+        label = Identifier.1),
+    # label all ID's despite overlap
+    max.overlaps = Inf,
+    size = 4
+  ) +
   # label x and y axis for consistency with other plots
-    labs(x = "δ13C (‰)",
-       y = "δ15N (‰)")+
+  labs(x = "δ13C (‰)",
+       y = "δ15N (‰)") +
   # create outlines for herbivores, omnivores, carnivores using parameters from Müldner, G. (2018).
-  annotate("rect", xmin=c(-22,-21,-20), xmax=c(-20,-19,-18), 
-           ymin =c(4,6,8), ymax =c(5.9,7.9,10), fill=NA, color="black")+
-  # create outline for "Terrestrial C3 Ecosystem" for context on graph. 
-  annotate("rect", xmin=c(-23), xmax=c(-17), ymin=c(1), ymax =c(13), color="Dark Green", fill=NA )+
+  annotate(
+    "rect",
+    xmin = c(-22, -21, -20),
+    xmax = c(-20, -19, -18),
+    ymin = c(4, 6, 8),
+    ymax = c(5.9, 7.9, 10),
+    fill = NA,
+    color = "black"
+  ) +
+  # create outline for "Terrestrial C3 Ecosystem" for context on graph.
+  annotate(
+    "rect",
+    xmin = c(-23),
+    xmax = c(-17),
+    ymin = c(1),
+    ymax = c(13),
+    color = "Dark Green",
+    fill = NA
+  ) +
   # label all outlines for context and clarity
-    annotate("text", x = -20, y = 13.5, label = "Terrestrial-C3-Ecosystem",color = "Dark Green",
-  parse = TRUE)+
-    annotate("text", x = -21.5, y = 6.5, label = "Herbivores",
-  parse = TRUE)+
-    annotate("text", x = -20.5, y = 8.5, label = "Omnivores",
-  parse = TRUE)+
-    annotate("text", x = -19.5, y = 10.5, label = "Carnivores",
-  parse = TRUE)+
+  annotate(
+    "text",
+    x = -20,
+    y = 13.5,
+    label = "Terrestrial-C3-Ecosystem",
+    color = "Dark Green",
+    parse = TRUE
+  ) +
+  annotate(
+    "text",
+    x = -21.5,
+    y = 6.5,
+    label = "Herbivores",
+    parse = TRUE
+  ) +
+  annotate(
+    "text",
+    x = -20.5,
+    y = 8.5,
+    label = "Omnivores",
+    parse = TRUE
+  ) +
+  annotate(
+    "text",
+    x = -19.5,
+    y = 10.5,
+    label = "Carnivores",
+    parse = TRUE
+  ) +
   # set x and y limits to values close to data points for clarity and maximize space on graph
-  xlim(-23, -17)+
-  ylim(0,14.5) +
-    labs(title = "Comparing Archy 486 Samples to Trophic Levels in a Terrestrial C3 Ecosystem")
+  #xlim(-23,-17) +
+ # ylim(0, 14.5) +
+  labs(title = "Comparing Archy 486 Samples to Trophic Levels in a Terrestrial C3 Ecosystem")
+
+
 ggsave(here("analysis",
             "figures", 
             "trophic_level.png"),
@@ -282,6 +320,8 @@ ggsave(here("analysis",
 
 ```
 
+
+
 ```{r}
 # subsistence type
 # label not aligning with dots
@@ -289,23 +329,27 @@ ggsave(here("analysis",
 
 ggplot() +
   geom_point(data = sample_data,
-             aes(x=d.13C.12C.raw,
-                 y=d.15N.14N.raw),
+             aes(x = `d.13C.12C.VPDB`, 
+                 y = `d.15N.14N.air`),
              size = 1,
              colour = "red") +
+  geom_point(data = global_data,
+             aes(x = `δ13C_MDE (‰)`, 
+                 y = `δ15N_MDE (‰)`,
+                 colour = `subsistence style`),
+             size=1) +
   geom_text_repel(data = sample_data,
              aes(x = `d.13C.12C.VPDB`, 
                  y = `d.15N.14N.air`,
                  label = Identifier.1),
              # label all ID's despite overlap
              max.overlaps = Inf,
-             size = 4)+
-  geom_point(data = global_data,
-             aes(x = `δ13C_MDE (‰)`, 
-                 y = `δ15N_MDE (‰)`,
-                 colour = `subsistence style`),
-             size=1) +
-  xlim(-30,0) 
+             size = 4,
+             bg.color = "white",
+             bg.r = 0.1) +
+  xlim(-30,-10) 
+
+
   ggsave(here("analysis",
             "figures", 
             "subsistence_style.png"),
