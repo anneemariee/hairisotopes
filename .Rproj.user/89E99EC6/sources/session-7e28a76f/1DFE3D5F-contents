@@ -38,6 +38,10 @@ global_data_av <-
   read_excel("Global N15 Values.xlsx", 
              sheet ="modern subsistence averages") %>% 
   drop_na(`δ13C_MDE (‰)`)
+
+# read in British and Michigan Data
+
+British_data <- read_csv("data/British.csv")
   
 ```
 

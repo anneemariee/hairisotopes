@@ -1,0 +1,5 @@
+"0","# read sample and global data into variables"
+"0","sample_data <- "
+"0","  read_csv(""sample_CN.csv"")"
+"2","Error: 'sample_CN.csv' does not exist in current working directory ('/Users/annemariepoole/Desktop/hairisotopes/hairisotopes/analysis').
+"
