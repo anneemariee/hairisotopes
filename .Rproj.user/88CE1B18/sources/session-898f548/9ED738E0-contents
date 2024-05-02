@@ -28,16 +28,22 @@ The code blocks below produce Figure 1 on our poster:
 ```{r}
 # read sample and global data into variables
 sample_data <- 
-  read_csv("sample_CN.csv")
+  read_csv("data/sample_CN.csv")
 
 global_data_indiv <- 
-  read_excel("Global N15 Values.xlsx", 
+  read_excel("data/Global N15 Values.xlsx", 
              sheet ="Modern subsistence ind.")
 
 global_data_av <- 
-  read_excel("Global N15 Values.xlsx", 
+  read_excel("data/Global N15 Values.xlsx", 
              sheet ="modern subsistence averages") %>% 
   drop_na(`δ13C_MDE (‰)`)
+
+# read in British and Michigan Data
+
+British_data <- read_csv("data/British.csv")
+
+Michigan_data <- read_csv("data/Michigan_dataset.csv")
   
 ```
 
