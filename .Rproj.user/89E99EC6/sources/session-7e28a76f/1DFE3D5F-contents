@@ -42,6 +42,8 @@ global_data_av <-
 # read in British and Michigan Data
 
 British_data <- read_csv("data/British.csv")
+
+Michigan_data <- read_csv("data/Michigan_dataset.csv")
   
 ```
 
