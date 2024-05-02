@@ -3,9 +3,9 @@
     "path": "C:/Users/aoife/Desktop/hairisotopes/Analysis.qmd",
     "project_path": "Analysis.qmd",
     "type": "quarto_markdown",
-    "hash": "0",
+    "hash": "897615682",
     "contents": "",
-    "dirty": true,
+    "dirty": false,
     "created": 1714607981515.0,
     "source_on_save": false,
     "relative_order": 1,
@@ -16,11 +16,11 @@
         "scrollLine": "29"
     },
     "folds": "",
-    "lastKnownWriteTime": 1714607959,
+    "lastKnownWriteTime": 1714608469,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1714608226266,
+    "last_content_update": 1714608469411,
     "read_only": false,
     "read_only_alternatives": []
 }
