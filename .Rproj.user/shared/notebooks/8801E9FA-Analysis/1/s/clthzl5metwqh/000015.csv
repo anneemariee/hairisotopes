@@ -1,7 +1,0 @@
-"0","
-global_data_av <- 
-  read_excel(""Global N15 Values.xlsx"", 
-             sheet =""modern subsistence averages"") %>% 
-  drop_na(`δ13C_MDE (‰)`)
-"
-"2","New names:"
