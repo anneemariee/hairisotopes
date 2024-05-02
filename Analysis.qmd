@@ -388,19 +388,34 @@ ggplot() +
   geom_point(data = British_data,
              aes(x = `δ13C (‰)`, 
                  y = `δ15N (‰)`),
-             size = 1,
-             colour = "red") +
+             size = 2,
+             colour = "purple") +
   geom_point(data = Michigan_data,
              aes(x = `δ13C (‰)`, 
                  y = `δ15N (‰)`),
-             size = 1,
-             colour = "blue") +
+             size = 2,
+             colour = "orange") +
   geom_point(data = sample_data,
              aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`),
-             size = 1,
-             colour = "green")
+                 y = `δ15N (‰)`,
+             colour = "red")) # add label for each point +
+  #geom_text_repel(data = sample_data,
+             #aes(x = `δ13C (‰)`, 
+                 #y = `δ15N (‰)`,
+                 #label = Identifier.1),
+             # label all ID's despite overlap
+            # max.overlaps = Inf,
+            # size = 2,
+            # bg.color = "white",
+             #bg.r = 0.1)
   
+ ggsave(here("figures", 
+            "compared_study.png"),
+       bg ="white",
+       h = 5, # experiment with h and w to get the right size and proportion
+       w = 9,
+       units = "in",
+       dpi = 900) # make the image nice and crisp))
 
 ```
 
