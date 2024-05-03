@@ -342,12 +342,23 @@ ggsave(here("analysis",
 # redo
 
 
-#fixing typo!!!
+#fixing typos in original global data dataset!!!
 global_data_renamed <- global_data %>% 
  rename(`Subsistence Style` = `subsistence style`) 
 
-  global_data_renamed %>% 
-    case_when("Subsistence Style" == "innuit" ~ "Inuit")
+
+  global_data_right <- global_data_renamed %>% 
+  mutate("Subsistence Style" = case_when(
+    `Subsistence Style` == "innuit" ~ "Inuit",
+    `Subsistence Style` == "rural mongolian" ~ "Rural Mongolian",
+    `Subsistence Style` == "Farmers who fish" ~ "Farmers who fish",
+    `Subsistence Style` == "villagers" ~ "Villager",
+    `Subsistence Style` == "subsistence" ~ "Subsistence",
+    `Subsistence Style` == "Pastoralist" ~ "Pastoralist",
+    `Subsistence Style` == "Peasant Farmer" ~ "Peasant Farmer",
+    `Subsistence Style` == "hunter gatherer" ~ "Hunter Gatherer",
+    `Subsistence Style` == "horticulturalists" ~ "Horticulturalist"
+))
   
   ###
   
