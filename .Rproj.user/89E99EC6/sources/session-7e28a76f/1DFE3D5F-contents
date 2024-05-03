@@ -27,6 +27,8 @@ The code blocks below produce Figure 1 on our poster:
 
 ```{r}
 # read sample and global data into variables
+20 / 3
+c4 <- tibble(9:45)
 sample_data <- 
   read_csv("data/sample_CN.csv")
 
@@ -45,6 +47,7 @@ British_data <- read_csv("data/British.csv")
 
 Michigan_data <- read_csv("data/Michigan_dataset .csv")
   
+
 ```
 
 ```{r}
@@ -126,9 +129,8 @@ ggplot(sample_data) +
     parse = TRUE,
     size=5
   ) +
-  # set x and y limits to values close to data points for clarity and maximize space on graph
-  #xlim(-23,-17) +
- # ylim(0, 14.5) +
+  scale_x_continuous(sec.axis = dup_axis(
+    name = "% C4")) +
   labs(title = "Comparing Archy 486 Samples to Trophic Levels in a Terrestrial C3 Ecosystem")
 
 
