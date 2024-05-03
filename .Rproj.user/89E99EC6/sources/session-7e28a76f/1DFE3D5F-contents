@@ -368,10 +368,10 @@ ggplot() +
                  y = `d.15N.14N.air`),
              size = 3,
              colour = "red") +
-  geom_point(data = global_data,
+  geom_point(data = global_data_right,
              aes(x = `δ13C_MDE (‰)`, 
                  y = `δ15N_MDE (‰)`,
-                 colour = `subsistence style`),
+                 colour = `Subsistence Style`),
              size=1) +
   geom_text_repel(data = sample_data,
              aes(x = `d.13C.12C.VPDB`, 
