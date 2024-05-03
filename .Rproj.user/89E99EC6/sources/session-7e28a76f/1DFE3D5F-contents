@@ -341,6 +341,16 @@ ggsave(here("analysis",
 # label not aligning with dots
 # redo
 
+
+#fixing typo!!!
+global_data_renamed <- global_data %>% 
+ rename(`Subsistence Style` = `subsistence style`) 
+
+  global_data_renamed %>% 
+    case_when("Subsistence Style" == "innuit" ~ "Inuit")
+  
+  ###
+  
 ggplot() +
   geom_point(data = sample_data,
              aes(x = `d.13C.12C.VPDB`, 
@@ -376,7 +386,7 @@ ggplot() +
 
 ```{r}
 # British and Michigan comparison
-color_palette <- colorRampPalette(c("red", "blue", "green", "purple", "orange"))(length(unique_sample_ids))
+color_palette <- colorRampPalette(c("red", "blue", "green", "purple", "orange"))
 
 #Rename
 names(British_data)[1] <- "δ13C (‰)"
