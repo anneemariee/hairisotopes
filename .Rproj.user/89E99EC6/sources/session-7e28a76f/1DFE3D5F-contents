@@ -375,7 +375,7 @@ ggplot() +
 ```
 
 ```{r}
-# British and Michigan comparision
+# British and Michigan comparison
 
 #Rename
 names(British_data)[1] <- "δ13C (‰)"
@@ -386,6 +386,41 @@ names(Michigan_data)[2] <- "δ15N (‰)"
 
 names(sample_data)[8] <- "δ13C (‰)"
 names(sample_data)[10] <- "δ15N (‰)"
+
+# find sds
+
+#british
+
+British_data_mean_13c <- British_data %>%
+  summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
+
+British_data_sd_13c <-
+    sd(British_data$`δ13C (‰)`)
+
+British_data_mean_15n <- British_data %>%
+  summarize(`δ15N (‰)`=mean(`δ15N (‰)`))
+
+British_data_sd_15n <-
+  sd(British_data$`δ15N (‰)`)
+
+# michigan
+
+Mich_data_mean_13c <- Michigan_data %>%
+   summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
+
+sd_mich_13c <-
+    sd(Michigan_data$`δ13C (‰)`)
+
+
+Mich_data_mean_15n<-
+  mean(Michigan_data$`δ15N (‰)`)
+
+sd_mich_15n <-
+    sd(Mich_data_mean_15n)
+
+# create a British data average dataframe
+
+####
 
 ggplot() +
   geom_point(data = British_data,
@@ -401,7 +436,28 @@ ggplot() +
   geom_point(data = sample_data,
              aes(x = `δ13C (‰)`, 
                  y = `δ15N (‰)`,
-             colour = "red")) # add label for each point +
+             colour = "red")) +
+    geom_point(data = British_data_mean_13c,
+             aes(x = `δ13C (‰)`, 
+                 y = `δ15N (‰)`),
+             size = 2,
+             colour = "purple") +
+  geom_linerange(data =  British_data_mean_13c,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                xmin=`δ13C (‰)` -1*+1*British_data_sd_13c, 
+                xmax=`δ13C (‰)` +1*British_data_sd_13c))) +
+  
+    geom_linerange(data =  British_data_mean_13c,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                xmin=`δ13C (‰)` -1*+1*British_data_sd_13c, 
+                xmax=`δ13C (‰)` +1*British_data_sd_13c)))
+  
+  
+  
+ 
+  # add label for each point +
   #geom_text_repel(data = sample_data,
              #aes(x = `δ13C (‰)`, 
                  #y = `δ15N (‰)`,
