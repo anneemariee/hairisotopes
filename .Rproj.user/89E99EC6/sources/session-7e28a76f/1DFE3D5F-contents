@@ -412,11 +412,11 @@ sd_mich_13c <-
     sd(Michigan_data$`δ13C (‰)`)
 
 
-Mich_data_mean_15n<-
-  mean(Michigan_data$`δ15N (‰)`)
+Mich_data_mean_15n <- Michigan_data %>%
+  summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
 
 sd_mich_15n <-
-    sd(Mich_data_mean_15n)
+    sd(Michigan_data$`δ15N (‰)`)
 
 # create a British data average dataframe
 
@@ -437,7 +437,13 @@ ggplot() +
              aes(x = `δ13C (‰)`, 
                  y = `δ15N (‰)`,
              colour = "red")) +
-    geom_point(data = British_data_mean_13c,
+  geom_point(data = Mich_data_mean_15n,
+             aes(x = `δ13C (‰)`, 
+                 y = `δ15N (‰)`),
+             size = 2,
+             colour = "orange") +
+  # British data
+  geom_point(data = British_data_mean_13c,
              aes(x = `δ13C (‰)`, 
                  y = `δ15N (‰)`),
              size = 2,
@@ -445,16 +451,24 @@ ggplot() +
   geom_linerange(data =  British_data_mean_13c,
                 (aes(x = `δ13C (‰)`,
                 y = `δ15N (‰)` ,
-                xmin=`δ13C (‰)` -1*+1*British_data_sd_13c, 
+                xmin=`δ13C (‰)` -1*British_data_sd_13c, 
                 xmax=`δ13C (‰)` +1*British_data_sd_13c))) +
-  
-    geom_linerange(data =  British_data_mean_13c,
+  geom_linerange(data =  British_data_mean_15n,
                 (aes(x = `δ13C (‰)`,
                 y = `δ15N (‰)` ,
-                xmin=`δ13C (‰)` -1*+1*British_data_sd_13c, 
-                xmax=`δ13C (‰)` +1*British_data_sd_13c)))
-  
-  
+                ymin=`δ15N (‰)` -1*British_data_sd_15n, 
+                ymax=`δ15N (‰)` +1*British_data_sd_15n))) +
+  # michigan data
+   geom_linerange(data =  Mich_data_mean_13c,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                xmin=`δ13C (‰)` -1*sd_mich_13c, 
+                xmax=`δ13C (‰)` +1*sd_mich_13c))) +
+   geom_linerange(data =  Mich_data_mean_15n,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                ymin=`δ15N (‰)` -1*sd_mich_15n, 
+                ymax=`δ15N (‰)` +1*sd_mich_15n)))
   
  
   # add label for each point +
