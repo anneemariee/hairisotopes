@@ -371,6 +371,7 @@ ggplot() +
        dpi = 900) # make the image nice and crisp))
 
 ```
+
 ```{r}
 # British and Michigan comparision
 
