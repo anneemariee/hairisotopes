@@ -28,22 +28,21 @@ The code blocks below produce Figure 1 on our poster:
 ```{r}
 # read sample and global data into variables
 sample_data <- 
-  read_csv("data/sample_CN.csv")
+  read_csv("sample_CN.csv")
 
 global_data_indiv <- 
-  read_excel("data/Global N15 Values.xlsx", 
+  read_excel("Global N15 Values.xlsx", 
              sheet ="Modern subsistence ind.")
 
 global_data_av <- 
-  read_excel("data/Global N15 Values.xlsx", 
+  read_excel("Global N15 Values.xlsx", 
              sheet ="modern subsistence averages") %>% 
   drop_na(`δ13C_MDE (‰)`)
 
-# read in British and Michigan Data
+# read British and Michigan data into variables
 
-British_data <- read_csv("data/British.csv")
-
-Michigan_data <- read_csv("data/Michigan_dataset .csv")
+British_data <- 
+  read_csv("data/British.csv")
   
 ```
 
@@ -55,21 +54,19 @@ library(ggrepel)
 ggplot(sample_data) +
   geom_point(aes(x = d.13C.12C.VPDB ,
                  y = d.15N.14N.air),
-             size = 3,
-             colour="red")+
+             size = 2) +
   # label each data point with sample ID
   geom_text_repel(
     aes(x = `d.13C.12C.VPDB`,
         y = `d.15N.14N.air`,
         label = Identifier.1),
-    size=3,
     # label all ID's despite overlap
-    max.overlaps = Inf) +
+    max.overlaps = Inf,
+    size = 4
+  ) +
   # label x and y axis for consistency with other plots
   labs(x = "δ13C (‰)",
-       y = "δ15N (‰)",
-       size=3,
-       linewidth=2)+
+       y = "δ15N (‰)") +
   # create outlines for herbivores, omnivores, carnivores using parameters from Müldner, G. (2018).
   annotate(
     "rect",
@@ -78,8 +75,7 @@ ggplot(sample_data) +
     ymin = c(4, 6, 8),
     ymax = c(5.9, 7.9, 10),
     fill = NA,
-    color = "black",
-    linewidth=0.5
+    color = "black"
   ) +
   # create outline for "Terrestrial C3 Ecosystem" for context on graph.
   annotate(
@@ -89,8 +85,7 @@ ggplot(sample_data) +
     ymin = c(1),
     ymax = c(13),
     color = "Dark Green",
-    fill = NA,
-    linewidth=1
+    fill = NA
   ) +
   # label all outlines for context and clarity
   annotate(
@@ -99,32 +94,28 @@ ggplot(sample_data) +
     y = 13.5,
     label = "Terrestrial-C3-Ecosystem",
     color = "Dark Green",
-    parse = TRUE,
-    size=5
+    parse = TRUE
   ) +
   annotate(
     "text",
     x = -21.5,
     y = 6.5,
     label = "Herbivores",
-    parse = TRUE,
-    size=5
+    parse = TRUE
   ) +
   annotate(
     "text",
     x = -20.5,
     y = 8.5,
     label = "Omnivores",
-    parse = TRUE,
-    size=5
+    parse = TRUE
   ) +
   annotate(
     "text",
     x = -19.5,
     y = 10.5,
     label = "Carnivores",
-    parse = TRUE,
-    size=5
+    parse = TRUE
   ) +
   # set x and y limits to values close to data points for clarity and maximize space on graph
   #xlim(-23,-17) +
@@ -132,11 +123,12 @@ ggplot(sample_data) +
   labs(title = "Comparing Archy 486 Samples to Trophic Levels in a Terrestrial C3 Ecosystem")
 
 
-ggsave(here("figures",
+ggsave(here("analysis",
+            "figures", 
             "trophic_level.png"),
        bg ="white",
-       h = 5, # experiment with h and w to get the right size and proportion
-       w = 9,
+       h = 15, # experiment with h and w to get the right size and proportion
+       w = 25,
        units = "in",
        dpi = 900) # make the image nice and crisp))
 
@@ -147,14 +139,14 @@ The code blocks below produce Figure 2 on our poster:
 ```{r}
 
 global_data <- 
-  read_excel("data/Global N15 Values.xlsx",
+  read_excel("Global N15 Values.xlsx",
              sheet = "Modern subsistence ind.")
 global_values <- 
-  read_excel("data/Global N15 Values.xlsx",
+  read_excel("Global N15 Values.xlsx",
              sheet = "Modern non subsistence averages")
 
 global_subsistence_values <- 
-  read_excel("data/Global N15 Values.xlsx",
+  read_excel("Global N15 Values.xlsx",
     sheet = "modern subsistence averages")
 ```
 
@@ -238,7 +230,7 @@ ggplot() +
              aes(x = `δ13C (‰)`,
                  y = `δ15N (‰)`,
                  color = `location`), 
-             size = 3) +
+             size = 2) +
   geom_linerange(data = renamed_subsistence,
                 (aes(x = `δ13C (‰)`,
                 y = `δ15N (‰)` ,
@@ -263,11 +255,12 @@ ggplot() +
                 xmax=`δ13C (‰)` +1*mean_sd_C13))) +
   labs(title = "Global Context for Average δ15N (‰) and δ13C (‰) in Archy 486 Class")
 
-ggsave(here("figures", 
+ggsave(here("analysis",
+            "figures", 
             "geography.png"),
        bg ="white",
-       h = 5, # experiment with h and w to get the right size and proportion
-       w = 9,
+       h = 15, # experiment with h and w to get the right size and proportion
+       w = 25,
        units = "in",
        dpi = 900) # make the image nice and crisp))
 
@@ -278,7 +271,7 @@ ggsave(here("figures",
 The code blocks below produce Figure 3 on our poster:
 
 ```{r}
-eating_habits_data <- read_excel("data/Food Survey Responses-2.xlsx")
+eating_habits_data <- read_excel("Food Survey Responses-2.xlsx")
 
 ```
 
@@ -343,7 +336,7 @@ ggplot() +
   geom_point(data = sample_data,
              aes(x = `d.13C.12C.VPDB`, 
                  y = `d.15N.14N.air`),
-             size = 3,
+             size = 1,
              colour = "red") +
   geom_point(data = global_data,
              aes(x = `δ13C_MDE (‰)`, 
@@ -362,58 +355,12 @@ ggplot() +
   xlim(-30,-10) 
 
 
-  ggsave(here("figures", 
+  ggsave(here("analysis",
+            "figures", 
             "subsistence_style.png"),
        bg ="white",
-       h = 5, # experiment with h and w to get the right size and proportion
-       w = 9,
-       units = "in",
-       dpi = 900) # make the image nice and crisp))
-
-```
-```{r}
-# British and Michigan comparision
-
-#Rename
-names(British_data)[1] <- "δ13C (‰)"
-names(British_data)[2] <- "δ15N (‰)"
-
-names(Michigan_data)[1] <- "δ13C (‰)"
-names(Michigan_data)[2] <- "δ15N (‰)"
-
-names(sample_data)[8] <- "δ13C (‰)"
-names(sample_data)[10] <- "δ15N (‰)"
-
-ggplot() +
-  geom_point(data = British_data,
-             aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`),
-             size = 2,
-             colour = "purple") +
-  geom_point(data = Michigan_data,
-             aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`),
-             size = 2,
-             colour = "orange") +
-  geom_point(data = sample_data,
-             aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`,
-             colour = "red")) # add label for each point +
-  #geom_text_repel(data = sample_data,
-             #aes(x = `δ13C (‰)`, 
-                 #y = `δ15N (‰)`,
-                 #label = Identifier.1),
-             # label all ID's despite overlap
-            # max.overlaps = Inf,
-            # size = 2,
-            # bg.color = "white",
-             #bg.r = 0.1)
-  
- ggsave(here("figures", 
-            "compared_study.png"),
-       bg ="white",
-       h = 5, # experiment with h and w to get the right size and proportion
-       w = 9,
+       h = 15, # experiment with h and w to get the right size and proportion
+       w = 25,
        units = "in",
        dpi = 900) # make the image nice and crisp))
 
