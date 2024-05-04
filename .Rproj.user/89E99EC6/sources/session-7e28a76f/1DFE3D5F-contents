@@ -406,8 +406,6 @@ names(British_data)[2] <- "δ15N (‰)"
 names(Michigan_data)[1] <- "δ13C (‰)"
 names(Michigan_data)[2] <- "δ15N (‰)"
 
-names(sample_data)[8] <- "δ13C (‰)"
-names(sample_data)[10] <- "δ15N (‰)"
 
 # find sds
 
@@ -455,7 +453,7 @@ ggplot() +
                  y = `δ15N (‰)`),
              size = 2,
              colour = "orange") +
-  geom_point(data = sample_data,
+  geom_point(data = sample_data_perc_lab,
              aes(x = `δ13C (‰)`, 
                  y = `δ15N (‰)`,
              colour = "red")) +
