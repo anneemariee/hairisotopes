@@ -57,7 +57,9 @@ Michigan_data <- read_csv("data/Michigan_dataset .csv")
 library(ggrepel)
 ggplot(sample_data) +
   geom_point(aes(x = d.13C.12C.VPDB ,
-                 y = d.15N.14N.air),
+                 y = d.15N.14N.air), 
+             xmin = -24,
+             xmax = -10,
              size = 3,
              colour="red")+
   # label each data point with sample ID
@@ -67,7 +69,9 @@ ggplot(sample_data) +
         label = Identifier.1),
     size=3,
     # label all ID's despite overlap
-    max.overlaps = Inf) +
+    max.overlaps = Inf,
+    xmin = -24,
+    xmax = -10) +
   # label x and y axis for consistency with other plots
   labs(x = "δ13C (‰)",
        y = "δ15N (‰)",
