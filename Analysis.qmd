@@ -440,7 +440,7 @@ sd_mich_15n <-
 
 # create a British data average dataframe
 
-####
+#### need help fixing colors and standard error bar for British average
 
 ggplot() +
   geom_point(data = British_data,
@@ -472,49 +472,44 @@ ggplot() +
                 (aes(x = `δ13C (‰)`,
                 y = `δ15N (‰)` ,
                 ymin=`δ15N (‰)` -1*British_data_sd_15n, 
-                ymax=`δ15N (‰)` +1*British_data_sd_15n,
-                colour = "purple"))) +
+                ymax=`δ15N (‰)` +1*British_data_sd_15n))) +
   
   geom_linerange(data =  British_data_mean_13c,
                 (aes(x = `δ13C (‰)`,
                 y = `δ15N (‰)` ,
                 xmin=`δ13C (‰)` -1*British_data_sd_13c, 
-                xmax=`δ13C (‰)` +1*British_data_sd_13c,
-                colour = "purple"))) +
+                xmax=`δ13C (‰)` +1*British_data_sd_13c))) +
   
   geom_linerange(data =  British_data_mean_15n,
                 (aes(x = `δ13C (‰)`,
                 y = `δ15N (‰)` ,
                 ymin=`δ15N (‰)` -1*British_data_sd_15n, 
-                ymax=`δ15N (‰)` +1*British_data_sd_15n,
-                colour = "purple"))) +
+                ymax=`δ15N (‰)` +1*British_data_sd_15n))) +
   
   # michigan data
    geom_linerange(data =  Mich_data_mean_13c,
                 (aes(x = `δ13C (‰)`,
                 y = `δ15N (‰)` ,
                 xmin=`δ13C (‰)` -1*sd_mich_13c, 
-                xmax=`δ13C (‰)` +1*sd_mich_13c,
-                colour = "orange"))) +
+                xmax=`δ13C (‰)` +1*sd_mich_13c))) +
   
    geom_linerange(data =  Mich_data_mean_15n,
                 (aes(x = `δ13C (‰)`,
                 y = `δ15N (‰)` ,
                 ymin=`δ15N (‰)` -1*sd_mich_15n, 
-                ymax=`δ15N (‰)` +1*sd_mich_15n,
-                colour = "orange")))
+                ymax=`δ15N (‰)` +1*sd_mich_15n)))
   
  
-  # add label for each point +
-  #geom_text_repel(data = sample_data,
-             #aes(x = `δ13C (‰)`, 
-                 #y = `δ15N (‰)`,
-                 #label = Identifier.1),
+  #add label for each point +
+  geom_text_repel(data = sample_data,
+             aes(x = `δ13C (‰)`, 
+                 y = `δ15N (‰)`,
+                 label = Identifier.1),
              # label all ID's despite overlap
-            # max.overlaps = Inf,
-            # size = 2,
-            # bg.color = "white",
-             #bg.r = 0.1)
+             max.overlaps = Inf,
+             size = 2,
+            bg.color = "white",
+             bg.r = 0.1)
   
  ggsave(here("figures", 
             "compared_study.png"),
