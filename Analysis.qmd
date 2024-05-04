@@ -341,16 +341,37 @@ ggsave(here("analysis",
 # label not aligning with dots
 # redo
 
+
+#fixing typos in original global data dataset!!!
+global_data_renamed <- global_data %>% 
+ rename(`Subsistence Style` = `subsistence style`) 
+
+
+  global_data_right <- global_data_renamed %>% 
+  mutate("Subsistence Style" = case_when(
+    `Subsistence Style` == "innuit" ~ "Inuit",
+    `Subsistence Style` == "rural mongolian" ~ "Rural Mongolian",
+    `Subsistence Style` == "Farmers who fish" ~ "Farmers who fish",
+    `Subsistence Style` == "villagers" ~ "Villager",
+    `Subsistence Style` == "subsistence" ~ "Subsistence",
+    `Subsistence Style` == "Pastoralist" ~ "Pastoralist",
+    `Subsistence Style` == "Peasant Farmer" ~ "Peasant Farmer",
+    `Subsistence Style` == "hunter gatherer" ~ "Hunter Gatherer",
+    `Subsistence Style` == "horticulturalists" ~ "Horticulturalist"
+))
+  
+  ###
+  
 ggplot() +
   geom_point(data = sample_data,
              aes(x = `d.13C.12C.VPDB`, 
                  y = `d.15N.14N.air`),
              size = 3,
              colour = "red") +
-  geom_point(data = global_data,
+  geom_point(data = global_data_right,
              aes(x = `δ13C_MDE (‰)`, 
                  y = `δ15N_MDE (‰)`,
-                 colour = `subsistence style`),
+                 colour = `Subsistence Style`),
              size=1) +
   geom_text_repel(data = sample_data,
              aes(x = `d.13C.12C.VPDB`, 
@@ -373,8 +394,10 @@ ggplot() +
        dpi = 900) # make the image nice and crisp))
 
 ```
+
 ```{r}
-# British and Michigan comparision
+# British and Michigan comparison
+color_palette <- colorRampPalette(c("red", "blue", "green", "purple", "orange"))
 
 #Rename
 names(British_data)[1] <- "δ13C (‰)"
@@ -383,8 +406,41 @@ names(British_data)[2] <- "δ15N (‰)"
 names(Michigan_data)[1] <- "δ13C (‰)"
 names(Michigan_data)[2] <- "δ15N (‰)"
 
-names(sample_data)[8] <- "δ13C (‰)"
-names(sample_data)[10] <- "δ15N (‰)"
+
+# find sds
+
+#british
+
+British_data_mean_13c <- British_data %>%
+  summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
+
+British_data_sd_13c <-
+    sd(British_data$`δ13C (‰)`)
+
+British_data_mean_15n <- British_data %>%
+  summarize(`δ15N (‰)`=mean(`δ15N (‰)`))
+
+British_data_sd_15n <-
+  sd(British_data$`δ15N (‰)`)
+
+# michigan
+
+Mich_data_mean_13c <- Michigan_data %>%
+   summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
+
+sd_mich_13c <-
+    sd(Michigan_data$`δ13C (‰)`)
+
+
+Mich_data_mean_15n <- Michigan_data %>%
+  summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
+
+sd_mich_15n <-
+    sd(Michigan_data$`δ15N (‰)`)
+
+# create a British data average dataframe
+
+#### need help fixing colors and standard error bar for British average
 
 ggplot() +
   geom_point(data = British_data,
@@ -397,19 +453,63 @@ ggplot() +
                  y = `δ15N (‰)`),
              size = 2,
              colour = "orange") +
-  geom_point(data = sample_data,
+  geom_point(data = sample_data_perc_lab,
              aes(x = `δ13C (‰)`, 
                  y = `δ15N (‰)`,
-             colour = "red")) # add label for each point +
-  #geom_text_repel(data = sample_data,
-             #aes(x = `δ13C (‰)`, 
-                 #y = `δ15N (‰)`,
-                 #label = Identifier.1),
+             colour = "red")) +
+  geom_point(data = Mich_data_mean_15n,
+             aes(x = `δ13C (‰)`, 
+                 y = `δ15N (‰)`),
+             size = 2,
+             colour = "orange") +
+  # British data
+  geom_point(data = British_data_mean_13c,
+             aes(x = `δ13C (‰)`, 
+                 y = `δ15N (‰)`),
+             size = 2,
+             colour = "purple") +
+   geom_linerange(data =  British_data_mean_15n,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                ymin=`δ15N (‰)` -1*British_data_sd_15n, 
+                ymax=`δ15N (‰)` +1*British_data_sd_15n))) +
+  
+  geom_linerange(data =  British_data_mean_13c,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                xmin=`δ13C (‰)` -1*British_data_sd_13c, 
+                xmax=`δ13C (‰)` +1*British_data_sd_13c))) +
+  
+  geom_linerange(data =  British_data_mean_15n,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                ymin=`δ15N (‰)` -1*British_data_sd_15n, 
+                ymax=`δ15N (‰)` +1*British_data_sd_15n))) +
+  
+  # michigan data
+   geom_linerange(data =  Mich_data_mean_13c,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                xmin=`δ13C (‰)` -1*sd_mich_13c, 
+                xmax=`δ13C (‰)` +1*sd_mich_13c))) +
+  
+   geom_linerange(data =  Mich_data_mean_15n,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                ymin=`δ15N (‰)` -1*sd_mich_15n, 
+                ymax=`δ15N (‰)` +1*sd_mich_15n)))
+  
+ 
+  #add label for each point +
+  geom_text_repel(data = sample_data,
+             aes(x = `δ13C (‰)`, 
+                 y = `δ15N (‰)`,
+                 label = Identifier.1),
              # label all ID's despite overlap
-            # max.overlaps = Inf,
-            # size = 2,
-            # bg.color = "white",
-             #bg.r = 0.1)
+             max.overlaps = Inf,
+             size = 2,
+            bg.color = "white",
+             bg.r = 0.1)
   
  ggsave(here("figures", 
             "compared_study.png"),
