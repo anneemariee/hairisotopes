@@ -42,9 +42,11 @@ global_data_av <-
 
 # read in British and Michigan Data
 
-British_data <- read_csv("data/British.csv")
+British_data <- read_csv("data/British.csv",
+                         col_names = FALSE)
 
-Michigan_data <- read_csv("data/Michigan_dataset .csv")
+Michigan_data <- read_csv("data/Michigan_dataset .csv",
+                         col_names = FALSE)
   
 
 ```
@@ -57,10 +59,8 @@ library(ggrepel)
 ggplot(sample_data) +
   geom_point(aes(x = d.13C.12C.VPDB ,
                  y = d.15N.14N.air), 
-             xmin = -24,
-             xmax = -10,
              size = 3,
-             colour="red")+
+             colour="red") +
   # label each data point with sample ID
   geom_text_repel(
     aes(x = `d.13C.12C.VPDB`,
@@ -68,9 +68,7 @@ ggplot(sample_data) +
         label = Identifier.1),
     size=3,
     # label all ID's despite overlap
-    max.overlaps = Inf,
-    xmin = -24,
-    xmax = -10) +
+    max.overlaps = Inf) +
   # label x and y axis for consistency with other plots
   labs(x = "δ13C (‰)",
        y = "δ15N (‰)",
@@ -131,10 +129,12 @@ ggplot(sample_data) +
     label = "Carnivores",
     parse = TRUE,
     size=5
-  )# +
+  ) +
+  theme_minimal(base_size = 14)
+# +
  #scale_x_continuous(sec.axis = dup_axis(
     #name = "% C4")) +
-  #labs(title = "Comparing Archy 486 Samples to Trophic Levels in a Terrestrial C3 Ecosystem")
+  #labs(title = "Comparing Archy 486 Samples to Trophic Levels in a Terrestrial C3 Ecosystem") 
 
 
 ggsave(here("figures",
@@ -148,7 +148,9 @@ ggsave(here("figures",
 ```
 
 ## Plotting Average δ15N (‰) and δ13C (‰) for ARCHY 486 Class and Modern Global Subsistence Average δ15N (‰) and δ13C (‰) (with line range for standard deviation)
+
 The code blocks below produce Figure 2 on our poster:
+
 ```{r}
 
 global_data <- 
@@ -236,8 +238,20 @@ ggplot() +
                  y = `δ15N (‰)`),
              size = 4,
               color = "red") +
-    
-  
+  # our error bar
+    geom_linerange(data =  Statistics_isotopes,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                ymin=`δ15N (‰)` -1*mean_sd_N15, 
+                ymax=`δ15N (‰)` +1*mean_sd_N15)),
+              color = "red") +
+    # our error bar
+    geom_linerange(data =  Statistics_isotopes,
+                (aes(x = `δ13C (‰)`,
+                y = `δ15N (‰)` ,
+                xmin=`δ13C (‰)` -1*mean_sd_C13, 
+                xmax=`δ13C (‰)` +1*mean_sd_C13)),
+              color = "red") +
   # plot global data
   geom_point(data = renamed_subsistence,
              aes(x = `δ13C (‰)`,
@@ -256,17 +270,7 @@ ggplot() +
                 xmin=`δ13C (‰)` -1*SD...4, 
                 xmax=`δ13C (‰)` +1*SD...4, 
                 color = `location`))) +
-  geom_linerange(data =  Statistics_isotopes,
-                (aes(x = `δ13C (‰)`,
-                y = `δ15N (‰)` ,
-                ymin=`δ15N (‰)` -1*mean_sd_N15, 
-                ymax=`δ15N (‰)` +1*mean_sd_N15))) +
-    geom_linerange(data =  Statistics_isotopes,
-                (aes(x = `δ13C (‰)`,
-                y = `δ15N (‰)` ,
-                xmin=`δ13C (‰)` -1*mean_sd_C13, 
-                xmax=`δ13C (‰)` +1*mean_sd_C13))) +
-  labs(title = "Global Context for Average δ15N (‰) and δ13C (‰) in Archy 486 Class")
+  theme_minimal(base_size = 14)
 
 ggsave(here("figures", 
             "geography.png"),
@@ -294,7 +298,7 @@ group_by(sample_id)
 
 ```{r}
 
-# NEED TO COMPLETELY REDO
+# skipping for now
 
 #| label: fig-food-survey
 #| fig-cap: "Eating habits surveyed by Archy 486 students Sample ID numbers. Plot produced by Jesus and Zach."
@@ -385,7 +389,9 @@ ggplot() +
              size = 4,
              bg.color = "white",
              bg.r = 0.1) +
-  xlim(-30,-10) 
+  xlim(-30,-10) +
+  xlab(expression(italic(delta)^13*C*" (‰)")) +
+  ylab(expression(italic(delta)^15*N*" (‰)")) 
 
 
   ggsave(here("figures", 
@@ -402,117 +408,62 @@ ggplot() +
 # British and Michigan comparison
 color_palette <- colorRampPalette(c("red", "blue", "green", "purple", "orange"))
 
-#Rename
-names(British_data)[1] <- "δ13C (‰)"
-names(British_data)[2] <- "δ15N (‰)"
+british_and_american_raw <- 
+bind_rows(list( oxford = British_data,
+                michigan = Michigan_data),
+          .id = "location") %>% 
+    rename("δ13C (‰)" = X1, 
+         "δ15N (‰)" = X2) %>% 
+  bind_rows(
 
-names(Michigan_data)[1] <- "δ13C (‰)"
-names(Michigan_data)[2] <- "δ15N (‰)"
+sample_data %>% 
+  select(`δ13C (‰)` = `d.13C.12C.VPDB`, 
+         `δ15N (‰)` = `d.15N.14N.air`) %>% 
+  mutate(location = 'uw')
+)
+  
+# find mean and sds
 
-
-# find sds
-
-#british
-
-British_data_mean_13c <- British_data %>%
-  summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
-
-British_data_sd_13c <-
-    sd(British_data$`δ13C (‰)`)
-
-British_data_mean_15n <- British_data %>%
-  summarize(`δ15N (‰)`=mean(`δ15N (‰)`))
-
-British_data_sd_15n <-
-  sd(British_data$`δ15N (‰)`)
-
-# michigan
-
-Mich_data_mean_13c <- Michigan_data %>%
-   summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
-
-sd_mich_13c <-
-    sd(Michigan_data$`δ13C (‰)`)
-
-
-Mich_data_mean_15n <- Michigan_data %>%
-  summarize(`δ13C (‰)`=mean(`δ13C (‰)`))
-
-sd_mich_15n <-
-    sd(Michigan_data$`δ15N (‰)`)
-
-# create a British data average dataframe
+british_and_american_means_and_sd <- 
+  british_and_american_raw %>% 
+  group_by(location) %>% 
+  summarise(mean_C = mean(`δ13C (‰)`),
+            mean_N = mean(`δ15N (‰)`),
+            sd_C =   sd(`δ13C (‰)`),
+            sd_N =   sd(`δ15N (‰)`))
 
 #### need help fixing colors and standard error bar for British average
 
 ggplot() +
-  geom_point(data = British_data,
-             aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`),
-             size = 2,
-             colour = "blue") +
-  geom_point(data = Michigan_data,
-             aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`),
-             size = 2,
-             colour = "green") +
-  geom_point(data = sample_data_perc_lab,
+  theme_minimal() +
+  # individual data points
+  geom_point(data = british_and_american_raw,
              aes(x = `δ13C (‰)`, 
                  y = `δ15N (‰)`,
-             colour = "red")) +
-  geom_point(data = Mich_data_mean_15n,
-             aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`),
-             size = 2,
-             colour = "green") +
-  # British data
-  geom_point(data = British_data_mean_13c,
-             aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`),
-             size = 2,
-             colour = "red") +
-   geom_linerange(data =  British_data_mean_15n,
-                (aes(x = `δ13C (‰)`,
-                y = `δ15N (‰)` ,
-                ymin=`δ15N (‰)` -1*British_data_sd_15n, 
-                ymax=`δ15N (‰)` +1*British_data_sd_15n))) +
+                 colour = location),
+             size = 2) +
+  # mean data points 
+  geom_point(data = british_and_american_means_and_sd,
+             aes(x = mean_C, 
+                 y = mean_N,
+                 colour = location),
+             size = 5) +
+  # error bars
+   geom_linerange(data =  british_and_american_means_and_sd,
+                (aes(x = mean_C,
+                     y = mean_N ,
+                 colour = location,
+                ymin= mean_N -1* sd_N, 
+                ymax=mean_N  +1* sd_N))) +
+     geom_linerange(data =  british_and_american_means_and_sd,
+                (aes(x = mean_C,
+                     y = mean_N ,
+                 colour = location,
+                xmin= mean_C -1*  sd_C, 
+                xmax= mean_C  +1* sd_C))) +
+  scale_colour_viridis_d()
+  scale_color_brewer(palette = "Dark2")
   
-  geom_linerange(data =  British_data_mean_13c,
-                (aes(x = `δ13C (‰)`,
-                y = `δ15N (‰)` ,
-                xmin=`δ13C (‰)` -1*British_data_sd_13c, 
-                xmax=`δ13C (‰)` +1*British_data_sd_13c))) +
-  
-  geom_linerange(data =  British_data_mean_15n,
-                (aes(x = `δ13C (‰)`,
-                y = `δ15N (‰)` ,
-                ymin=`δ15N (‰)` -1*British_data_sd_15n, 
-                ymax=`δ15N (‰)` +1*British_data_sd_15n))) +
-  
-  # michigan data
-   geom_linerange(data =  Mich_data_mean_13c,
-                (aes(x = `δ13C (‰)`,
-                y = `δ15N (‰)` ,
-                xmin=`δ13C (‰)` -1*sd_mich_13c, 
-                xmax=`δ13C (‰)` +1*sd_mich_13c))) +
-  
-   geom_linerange(data =  Mich_data_mean_15n,
-                (aes(x = `δ13C (‰)`,
-                y = `δ15N (‰)` ,
-                ymin=`δ15N (‰)` -1*sd_mich_15n, 
-                ymax=`δ15N (‰)` +1*sd_mich_15n)))
-  
- 
-  #add label for each point +
-  geom_text_repel(data = sample_data,
-             aes(x = `δ13C (‰)`, 
-                 y = `δ15N (‰)`,
-                 label = Identifier.1),
-             # label all ID's despite overlap
-             max.overlaps = Inf,
-             size = 2,
-            bg.color = "white",
-             bg.r = 0.1)
   
  ggsave(here("figures", 
             "compared_study.png"),
