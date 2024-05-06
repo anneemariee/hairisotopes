@@ -29,23 +29,23 @@ The code blocks below produce Figure 1 on our poster:
 # read sample and global data into variables
 
 sample_data <- 
-  read_csv("data/sample_CN.csv")
+  read_csv(here("data/sample_CN.csv"))
 
 global_data_indiv <- 
-  read_excel("data/Global N15 Values.xlsx", 
+  read_excel(here("data/Global N15 Values.xlsx"), 
              sheet ="Modern subsistence ind.")
 
 global_data_av <- 
-  read_excel("data/Global N15 Values.xlsx", 
+  read_excel(here("data/Global N15 Values.xlsx"), 
              sheet ="modern subsistence averages") %>% 
   drop_na(`δ13C_MDE (‰)`)
 
 # read in British and Michigan Data
 
-British_data <- read_csv("data/British.csv",
+British_data <- read_csv(here("data/British.csv"),
                          col_names = FALSE)
 
-Michigan_data <- read_csv("data/Michigan_dataset .csv",
+Michigan_data <- read_csv(here("data/Michigan_dataset .csv"),
                          col_names = FALSE)
   
 
@@ -154,14 +154,14 @@ The code blocks below produce Figure 2 on our poster:
 ```{r}
 
 global_data <- 
-  read_excel("data/Global N15 Values.xlsx",
+  read_excel(here("data/Global N15 Values.xlsx"),
              sheet = "Modern subsistence ind.")
 global_values <- 
-  read_excel("data/Global N15 Values.xlsx",
+  read_excel(here("data/Global N15 Values.xlsx"),
              sheet = "Modern non subsistence averages")
 
 global_subsistence_values <- 
-  read_excel("data/Global N15 Values.xlsx",
+  read_excel(here("data/Global N15 Values.xlsx"),
     sheet = "modern subsistence averages")
 ```
 
@@ -287,7 +287,7 @@ ggsave(here("figures",
 The code blocks below produce Figure 3 on our poster:
 
 ```{r}
-eating_habits_data <- read_excel("data/Food Survey Responses-2.xlsx")
+eating_habits_data <- read_excel(here("data/Food Survey Responses-2.xlsx"))
 
 ```
 
@@ -296,12 +296,13 @@ eating_habits_data %>%
 group_by(sample_id)
 ```
 
-```{r}
-
-# skipping for now
-
+```{r eval=FALSE}
 #| label: fig-food-survey
 #| fig-cap: "Eating habits surveyed by Archy 486 students Sample ID numbers. Plot produced by Jesus and Zach."
+
+ # skipping for now
+
+
 
 meat_column <- rep(eating_habits_data$meat_q, each = 9)
 fish_column <- rep(eating_habits_data$fish_q, each = 9)
@@ -345,9 +346,6 @@ ggsave(here("analysis",
 
 ```{r}
 # subsistence type
-# label not aligning with dots
-# redo
-
 
 #fixing typos in original global data dataset!!!
 global_data_renamed <- global_data %>% 
@@ -406,7 +404,6 @@ ggplot() +
 
 ```{r}
 # British and Michigan comparison
-color_palette <- colorRampPalette(c("red", "blue", "green", "purple", "orange"))
 
 british_and_american_raw <- 
 bind_rows(list( oxford = British_data,
