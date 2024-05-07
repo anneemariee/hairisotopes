@@ -426,7 +426,9 @@ sample_data %>%
   select(`δ13C (‰)` = `d.13C.12C.VPDB`, 
          `δ15N (‰)` = `d.15N.14N.air`) %>% 
   mutate(location = 'uw')
-)
+) %>% 
+  mutate(location = factor(location, 
+                              levels = c('uw', 'michigan', 'oxford')))
   
 # find mean and sds
 
