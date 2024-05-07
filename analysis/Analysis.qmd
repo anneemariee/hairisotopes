@@ -429,8 +429,6 @@ british_and_american_means_and_sd <-
             sd_C =   sd(`δ13C (‰)`),
             sd_N =   sd(`δ15N (‰)`))
 
-#### need help fixing colors and standard error bar for British average
-
 ggplot() +
   theme_minimal() +
   # individual data points
