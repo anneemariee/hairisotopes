@@ -415,8 +415,8 @@ ggplot() +
 # British and Michigan comparison
 
 british_and_american_raw <- 
-bind_rows(list( oxford = British_data,
-                michigan = Michigan_data),
+bind_rows(list( Oxford = British_data,
+                'Michigan (UM)' = Michigan_data),
           .id = "location") %>% 
     rename("δ13C (‰)" = X1, 
          "δ15N (‰)" = X2) %>% 
@@ -425,7 +425,7 @@ bind_rows(list( oxford = British_data,
 sample_data %>% 
   select(`δ13C (‰)` = `d.13C.12C.VPDB`, 
          `δ15N (‰)` = `d.15N.14N.air`) %>% 
-  mutate(location = 'uw')
+  mutate(location = 'Washington (UW)')
 )
   
 # find mean and sds
