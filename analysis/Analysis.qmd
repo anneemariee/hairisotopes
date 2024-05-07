@@ -57,6 +57,7 @@ Michigan_data <- read_csv(here("data/Michigan_dataset .csv"),
   # plot our hair data
 library(ggrepel)
 ggplot(sample_data) +
+    theme_minimal() +
   geom_point(aes(x = d.13C.12C.VPDB ,
                  y = d.15N.14N.air), 
              size = 3,
@@ -130,7 +131,9 @@ ggplot(sample_data) +
     parse = TRUE,
     size=5
   ) +
-  theme_minimal(base_size = 14)
+  theme_minimal(base_size = 14) +
+    xlab(expression(italic(delta)^13*C*" (‰)")) +
+  ylab(expression(italic(delta)^15*N*" (‰)")) 
 # +
  #scale_x_continuous(sec.axis = dup_axis(
     #name = "% C4")) +
@@ -232,6 +235,7 @@ global_values_perc %>%
 
 library(ggrepel)
 ggplot() +
+    theme_minimal() +
   # our data plot
   geom_point(data = Stats_isotopes,
              aes(x = `δ13C (‰)`,
@@ -270,7 +274,9 @@ ggplot() +
                 xmin=`δ13C (‰)` -1*SD...4, 
                 xmax=`δ13C (‰)` +1*SD...4, 
                 color = `location`))) +
-  theme_minimal(base_size = 14)
+  theme_minimal(base_size = 14) +
+    xlab(expression(italic(delta)^13*C*" (‰)")) +
+  ylab(expression(italic(delta)^15*N*" (‰)")) 
 
 ggsave(here("figures", 
             "geography.png"),
@@ -368,6 +374,7 @@ global_data_renamed <- global_data %>%
   ###
   
 ggplot() +
+    theme_minimal() +
   geom_point(data = sample_data,
              aes(x = `d.13C.12C.VPDB`, 
                  y = `d.15N.14N.air`),
@@ -389,7 +396,9 @@ ggplot() +
              bg.r = 0.1) +
   xlim(-30,-10) +
   xlab(expression(italic(delta)^13*C*" (‰)")) +
-  ylab(expression(italic(delta)^15*N*" (‰)")) 
+  ylab(expression(italic(delta)^15*N*" (‰)"))
+  #scale_colour_viridis_d()
+  #scale_color_brewer(palette = "Dark1")
 
 
   ggsave(here("figures", 
@@ -456,8 +465,10 @@ ggplot() +
                  colour = location,
                 xmin= mean_C -1*  sd_C, 
                 xmax= mean_C  +1* sd_C))) +
-  scale_colour_viridis_d()
-  scale_color_brewer(palette = "Dark2")
+  scale_colour_viridis_d() +
+  scale_color_brewer(palette = "Set1") +
+      xlab(expression(italic(delta)^13*C*" (‰)")) +
+  ylab(expression(italic(delta)^15*N*" (‰)"))
   
   
  ggsave(here("figures", 
