@@ -426,8 +426,8 @@ sample_data %>%
          `δ15N (‰)` = `d.15N.14N.air`) %>% 
   mutate(location = 'Washington (UW)')) %>% 
   mutate(location = factor(location, 
-                          levels = c('Washington (UW)', 
-                                     'Michigan (UM)',
+                          levels = c('Michigan (UM)',
+                                     'Washington (UW)',
                                      'Oxford')))
   
 # find mean and sds
