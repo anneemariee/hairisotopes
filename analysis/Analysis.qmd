@@ -465,9 +465,10 @@ ggplot() +
                  colour = location,
                 xmin= mean_C -1*  sd_C, 
                 xmax= mean_C  +1* sd_C))) +
-  scale_colour_viridis_d() +
-  scale_color_brewer(palette = "Set1") +
-      xlab(expression(italic(delta)^13*C*" (‰)")) +
+  scale_color_brewer(palette = "Set1",
+                     direction=-1,
+                     name = "Student\ngroup") +
+  xlab(expression(italic(delta)^13*C*" (‰)")) +
   ylab(expression(italic(delta)^15*N*" (‰)"))
   
   
